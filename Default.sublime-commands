@@ -7,8 +7,8 @@
       "caption": "Preferences: VSCode Settings",
       "command": "edit_settings",
       "args": {
-          "base_file": "${packages}/visual-studio-code/VSCode.sublime-settings",
-          "default": "// Settings in here override those in \"visual-studio-code/VSCode.sublime-settings\",\n\n{\n    $0\n}\n"
+          "base_file": "${packages}/Visual studio code/VSCode.sublime-settings",
+          "default": "// Settings in here override those in \"Visual studio code/VSCode.sublime-settings\",\n\n{\n    $0\n}\n"
       }
   },
 ]
