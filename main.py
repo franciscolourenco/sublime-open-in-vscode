@@ -30,7 +30,7 @@ def open_in_vs_code(path, folders):
     # cmd.append('--reuse-window')
 
     if path:
-        subprocess.call(["open", "-g", "-a", "Cursor", path])
+        subprocess.call(["open", "-g", "-a", "Cursor", "cursor://file{}".format(path)])
         subprocess.call(["osascript", "-e", 'tell application "Cursor" to activate'])
 
         # os.system('open "" cursor://file{}'.format(path))
