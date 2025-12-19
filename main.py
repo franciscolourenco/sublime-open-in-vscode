@@ -6,12 +6,14 @@ import os
 from functools import partial
 
 from itertools import chain
+
 flatten = chain.from_iterable
 
 # code --new-window --add ~/dev/work/repo/
 # code --reuse-window --goto ~/dev/work/repo/src/views/Departments.vue
 
 first_time = False
+
 
 def open_in_vs_code(path, folders):
     global first_time
@@ -28,9 +30,12 @@ def open_in_vs_code(path, folders):
     # cmd.append('--reuse-window')
 
     if path:
-        os.system('open "" cursor://file{}'.format(path))
-        # cmd.append('--goto')
-        # cmd.append('{}'.format(path))
+        subprocess.call(["open", "-g", "-a", "Cursor", path])
+        subprocess.call(["osascript", "-e", 'tell application "Cursor" to activate'])
+
+        # os.system('open "" cursor://file{}'.format(path))
+    # cmd.append('--goto')
+    # cmd.append('{}'.format(path))
 
     # startupinfo = None
     # if os.name == "nt":
@@ -59,7 +64,7 @@ class VscOpenInVisalStudioCodeCommand(WindowCommand):
             sel = view.sel()
             if sel:
                 (row, col) = view.rowcol(sel[0].a)
-                open_in_vs_code('{}:{}:{}'.format(path, (row) + 1, col + 1), folders)
+                open_in_vs_code("{}:{}:{}".format(path, (row) + 1, col + 1), folders)
             else:
                 open_in_vs_code(path, folders)
         else:
@@ -70,7 +75,9 @@ def get_subjects(view, *sections):
     # type: (sublime.View, str) -> Iterable[sublime.Region]
     return flatten(
         view.find_by_selector(
-            'meta.git-savvy.status.section.{} meta.git-savvy.status.subject'.format(section)
+            "meta.git-savvy.status.section.{} meta.git-savvy.status.subject".format(
+                section
+            )
         )
         for section in sections
     )
@@ -111,7 +118,7 @@ def get_selected_subjects(view, *sections):
 def get_selected_files(view, base_path, *sections):
     # type: (sublime.View, str, str) -> List[str]
     if not sections:
-        sections = ('staged', 'unstaged', 'untracked', 'merge-conflicts')
+        sections = ("staged", "unstaged", "untracked", "merge-conflicts")
 
     make_abs_path = partial(os.path.join, base_path)
 
@@ -125,7 +132,7 @@ class VscOpenInVisalStudioCodeGitSavvyStatusCommand(WindowCommand):
     def repo_path(self):
         view = self.window.active_view()
         settings = view.settings()
-        return settings.get('git_savvy.repo_path')
+        return settings.get("git_savvy.repo_path")
 
     def run(self):
         folders = self.window.folders() or []
